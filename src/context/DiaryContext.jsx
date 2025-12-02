@@ -4,9 +4,6 @@ const DiaryContext = createContext();
 
 export const useDiary = () => {
     const context = useContext(DiaryContext);
-    if (!context) {
-        throw new Error('useDiary must be used within DiaryProvider');
-    }
     return context;
 }
 
