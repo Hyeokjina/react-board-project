@@ -1,0 +1,76 @@
+import React from 'react'
+import { useNavigate, useLocation } from 'react-router-dom'
+import { useAuth } from '../../context/AuthContext'
+import { ROUTES } from '../../routes/routePaths'
+import {
+    HeaderContainer,
+    Nav,
+    Logo,
+    NavLinks,
+    NavLink,
+    AuthButtons,
+    UserInfo,
+    LogoutButton
+} from './Header.styled'
+
+const Header = () => {
+    const navigate = useNavigate();
+    const location = useLocation();
+    const { currentUser, logout, isLoggedIn } = useAuth();
+
+    const handleLogout = () => {
+        logout();
+        navigate(ROUTES.HOME);
+    }
+
+    const isActive = (path) => {
+        return location.pathname === path ? 'active' : '';
+    }
+
+    return (
+        <HeaderContainer>
+            <Nav>
+                <Logo onClick={() => navigate(ROUTES.HOME)}>
+                    📖 오늘 한 줄
+                </Logo>
+
+                <NavLinks>
+                    <NavLink
+                        onClick={() => navigate(ROUTES.HOME)}
+                        className={isActive(ROUTES.HOME)}
+                    >
+                        홈
+                    </NavLink>
+                    <NavLink
+                        onClick={() => navigate(ROUTES.DIARY_LIST)}
+                        className={isActive(ROUTES.DIARY_LIST)}
+                    >
+                        게시판
+                    </NavLink>
+                </NavLinks>
+
+                <AuthButtons>
+                    {isLoggedIn ? (
+                        <>
+                            <UserInfo>{currentUser.nickname}님</UserInfo>
+                            <LogoutButton onClick={handleLogout}>
+                                로그아웃
+                            </LogoutButton>
+                        </>
+                    ) : (
+                        <>
+                            <NavLink onClick={() => navigate(ROUTES.LOGIN)}>
+                                로그인
+                            </NavLink>
+                            <NavLink onClick={() => navigate(ROUTES.SIGNUP)}>
+                                회원가입
+                            </NavLink>
+                        </>
+                    )}
+                </AuthButtons>
+            </Nav>
+        </HeaderContainer>
+    )
+}
+
+export default Header
