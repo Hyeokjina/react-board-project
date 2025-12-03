@@ -14,7 +14,6 @@ import {
     TextareaGroup,
     Label,
     Textarea,
-    CharCount,
     ButtonGroup,
     SubmitButton,
     CancelButton,
@@ -32,7 +31,6 @@ const EMOTIONS = [
 const DiaryWrite = () => {
     const navigate = useNavigate();
     
-    // Zustand stores 사용
     const currentUser = useAuthStore(state => state.currentUser);
     const isLoggedIn = useAuthStore(state => state.isLoggedIn);
     const addDiary = useDiaryStore(state => state.addDiary);
@@ -75,10 +73,7 @@ const DiaryWrite = () => {
             return;
         }
 
-        // 일기 저장
         addDiary(currentUser.id, content.trim(), emotion);
-
-        // 목록으로 이동
         navigate(ROUTES.DIARY_LIST);
     }
 
@@ -124,9 +119,6 @@ const DiaryWrite = () => {
                             placeholder="오늘은 어떤 하루였나요? (100자 이내)"
                             rows={4}
                         />
-                        <CharCount>
-                            {content.length} / 100
-                        </CharCount>
                     </TextareaGroup>
 
                     {error && <ErrorMessage>{error}</ErrorMessage>}

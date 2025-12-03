@@ -1,54 +1,32 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import useAuthStore from '../stores/useAuthStore'
 import useDiaryStore from '../stores/useDiaryStore'
 import { ROUTES } from '../routes/routePaths'
+import {
+    Container,
+    FormCard,
+    Title,
+    Form,
+    DateDisplay,
+    EmotionPicker,
+    EmotionButton,
+    TextareaGroup,
+    Label,
+    Textarea,
+    ButtonGroup,
+    SubmitButton,
+    CancelButton,
+    ErrorMessage
+} from './DiaryWrite.styled'
 import styled from 'styled-components'
 
-const Container = styled.div`
-    max-width: 800px;
-    margin: 0 auto;
-`
-
-const Card = styled.div`
-    background: white;
-    padding: 48px;
-    border-radius: 16px;
-    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
-`
-
-const Header = styled.div`
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-    margin-bottom: 32px;
-`
-
-const DateText = styled.div`
-    font-size: 18px;
-    color: #7F8C8D;
-`
-
-const EmotionBadge = styled.div`
-    font-size: 48px;
-`
-
-const Content = styled.p`
-    font-size: 20px;
-    line-height: 1.8;
-    color: #2C3E50;
-    margin-bottom: 40px;
-    word-break: keep-all;
-`
-
-const ButtonGroup = styled.div`
-    display: flex;
-    gap: 12px;
-    justify-content: flex-end;
-`
-
-const Button = styled.button`
-    padding: 12px 24px;
+// 추가 스타일
+const DeleteButton = styled.button`
+    flex: 1;
+    padding: 14px;
+    background: #E74C3C;
+    color: white;
     border: none;
     border-radius: 8px;
     font-size: 16px;
@@ -57,58 +35,62 @@ const Button = styled.button`
     transition: all 0.2s;
 
     &:hover {
-        transform: translateY(-2px);
+        background: #c0392b;
     }
 `
 
-const BackButton = styled(Button)`
-    background: #E0E0E0;
-    color: #2C3E50;
-`
-
-const EditButton = styled(Button)`
-    background: #4ECDC4;
-    color: white;
-`
-
-const DeleteButton = styled(Button)`
-    background: #E74C3C;
-    color: white;
-`
-
-const NotFound = styled.div`
+const NotFoundCard = styled.div`
+    background: white;
+    padding: 80px 48px;
+    border-radius: 16px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
     text-align: center;
-    padding: 80px 20px;
-    
+
     h2 {
         font-size: 32px;
         color: #2C3E50;
         margin-bottom: 16px;
     }
-    
+
     p {
         color: #7F8C8D;
         margin-bottom: 24px;
     }
 `
 
-// 감정 이모지 매핑
-const EMOTIONS = {
-    happy: { emoji: '😊', label: '좋았어' },
-    sad: { emoji: '😢', label: '힘들었어' },
-    normal: { emoji: '😐', label: '그냥 그래' },
-    fire: { emoji: '🔥', label: '최고!' }
-}
+// 감정 옵션
+const EMOTIONS = [
+    { value: 'happy', emoji: '😊', label: '좋았어' },
+    { value: 'sad', emoji: '😢', label: '힘들었어' },
+    { value: 'normal', emoji: '😐', label: '그냥 그래' },
+    { value: 'fire', emoji: '🔥', label: '최고!' }
+]
 
 const DiaryDetail = () => {
     const navigate = useNavigate();
     const { id } = useParams();
     
-    // Zustand stores 사용
     const currentUser = useAuthStore(state => state.currentUser);
     const isLoggedIn = useAuthStore(state => state.isLoggedIn);
     const getDiaryById = useDiaryStore(state => state.getDiaryById);
+    const updateDiary = useDiaryStore(state => state.updateDiary);
     const deleteDiary = useDiaryStore(state => state.deleteDiary);
+
+    const [content, setContent] = useState('');
+    const [emotion, setEmotion] = useState('happy');
+    const [error, setError] = useState('');
+    const [diary, setDiary] = useState(null);
+
+    useEffect(() => {
+        if (isLoggedIn()) {
+            const foundDiary = getDiaryById(id);
+            if (foundDiary && foundDiary.userId === currentUser.id) {
+                setDiary(foundDiary);
+                setContent(foundDiary.content);
+                setEmotion(foundDiary.emotion);
+            }
+        }
+    }, [id, isLoggedIn, getDiaryById, currentUser]);
 
     // 로그인 체크
     if (!isLoggedIn()) {
@@ -116,21 +98,17 @@ const DiaryDetail = () => {
         return null;
     }
 
-    const diary = getDiaryById(id);
-
     // 일기가 없거나 다른 사용자의 일기인 경우
-    if (!diary || diary.userId !== currentUser.id) {
+    if (!diary) {
         return (
             <Container>
-                <Card>
-                    <NotFound>
-                        <h2>📭 일기를 찾을 수 없습니다</h2>
-                        <p>삭제되었거나 존재하지 않는 일기입니다.</p>
-                        <BackButton onClick={() => navigate(ROUTES.DIARY_LIST)}>
-                            목록으로 돌아가기
-                        </BackButton>
-                    </NotFound>
-                </Card>
+                <NotFoundCard>
+                    <h2>📭 일기를 찾을 수 없습니다</h2>
+                    <p>삭제되었거나 존재하지 않는 일기입니다.</p>
+                    <CancelButton onClick={() => navigate(ROUTES.DIARY_LIST)}>
+                        목록으로 돌아가기
+                    </CancelButton>
+                </NotFoundCard>
             </Container>
         );
     }
@@ -145,6 +123,31 @@ const DiaryDetail = () => {
         });
     }
 
+    const handleContentChange = (e) => {
+        const text = e.target.value;
+        if (text.length <= 100) {
+            setContent(text);
+            setError('');
+        }
+    }
+
+    const handleSubmit = (e) => {
+        e.preventDefault();
+
+        if (content.trim().length === 0) {
+            setError('일기 내용을 입력해주세요.');
+            return;
+        }
+
+        if (content.trim().length < 5) {
+            setError('최소 5자 이상 입력해주세요.');
+            return;
+        }
+
+        updateDiary(diary.id, content.trim(), emotion);
+        navigate(ROUTES.DIARY_LIST);
+    }
+
     const handleDelete = () => {
         if (window.confirm('정말 이 일기를 삭제하시겠습니까?')) {
             deleteDiary(diary.id);
@@ -154,30 +157,53 @@ const DiaryDetail = () => {
 
     return (
         <Container>
-            <Card>
-                <Header>
-                    <div>
-                        <DateText>{formatDate(diary.date)}</DateText>
-                    </div>
-                    <EmotionBadge>
-                        {EMOTIONS[diary.emotion] ? EMOTIONS[diary.emotion].emoji : '😊'}
-                    </EmotionBadge>
-                </Header>
+            <FormCard>
+                <Title>일기 수정 ✏️</Title>
+                <DateDisplay>{formatDate(diary.date)}</DateDisplay>
 
-                <Content>{diary.content}</Content>
+                <Form onSubmit={handleSubmit}>
+                    <EmotionPicker>
+                        <Label>오늘의 기분</Label>
+                        <div>
+                            {EMOTIONS.map(emo => (
+                                <EmotionButton
+                                    key={emo.value}
+                                    type="button"
+                                    active={emotion === emo.value}
+                                    onClick={() => setEmotion(emo.value)}
+                                >
+                                    <span className="emoji">{emo.emoji}</span>
+                                    <span className="label">{emo.label}</span>
+                                </EmotionButton>
+                            ))}
+                        </div>
+                    </EmotionPicker>
 
-                <ButtonGroup>
-                    <BackButton onClick={() => navigate(ROUTES.DIARY_LIST)}>
-                        목록으로
-                    </BackButton>
-                    <EditButton onClick={() => navigate(`/diaries/edit/${diary.id}`)}>
-                        수정하기
-                    </EditButton>
-                    <DeleteButton onClick={handleDelete}>
-                        삭제하기
-                    </DeleteButton>
-                </ButtonGroup>
-            </Card>
+                    <TextareaGroup>
+                        <Label>오늘 하루를 한 줄로 표현해보세요</Label>
+                        <Textarea
+                            value={content}
+                            onChange={handleContentChange}
+                            placeholder="오늘은 어떤 하루였나요? (100자 이내)"
+                            rows={4}
+                        />
+                    </TextareaGroup>
+
+                    {error && <ErrorMessage>{error}</ErrorMessage>}
+
+                    <ButtonGroup>
+                        <CancelButton type="button" onClick={() => navigate(ROUTES.DIARY_LIST)}>
+                            목록으로
+                        </CancelButton>
+                        <DeleteButton type="button" onClick={handleDelete}>
+                            삭제
+                        </DeleteButton>
+                        <SubmitButton type="submit">
+                            수정하기
+                        </SubmitButton>
+                    </ButtonGroup>
+                </Form>
+            </FormCard>
         </Container>
     )
 }

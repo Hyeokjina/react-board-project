@@ -6,6 +6,7 @@ export const HeaderContainer = styled.header`
     position: sticky;
     top: 0;
     z-index: 100;
+    width: 800px;
 `
 
 export const Nav = styled.nav`

@@ -118,12 +118,6 @@ export const Textarea = styled.textarea`
     }
 `
 
-export const CharCount = styled.div`
-    text-align: right;
-    font-size: 14px;
-    color: #7F8C8D;
-`
-
 export const ButtonGroup = styled.div`
     display: flex;
     gap: 12px;
