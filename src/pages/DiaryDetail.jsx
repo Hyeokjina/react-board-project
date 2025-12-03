@@ -103,7 +103,7 @@ const DiaryDetail = () => {
         return (
             <Container>
                 <NotFoundCard>
-                    <h2>📭 일기를 찾을 수 없습니다</h2>
+                    <h2>일기를 찾을 수 없습니다</h2>
                     <p>삭제되었거나 존재하지 않는 일기입니다.</p>
                     <CancelButton onClick={() => navigate(ROUTES.DIARY_LIST)}>
                         목록으로 돌아가기
@@ -124,11 +124,8 @@ const DiaryDetail = () => {
     }
 
     const handleContentChange = (e) => {
-        const text = e.target.value;
-        if (text.length <= 100) {
-            setContent(text);
-            setError('');
-        }
+        setContent(e.target.value);
+        setError('');
     }
 
     const handleSubmit = (e) => {
@@ -139,11 +136,7 @@ const DiaryDetail = () => {
             return;
         }
 
-        if (content.trim().length < 5) {
-            setError('최소 5자 이상 입력해주세요.');
-            return;
-        }
-
+        
         updateDiary(diary.id, content.trim(), emotion);
         navigate(ROUTES.DIARY_LIST);
     }
@@ -184,7 +177,7 @@ const DiaryDetail = () => {
                         <Textarea
                             value={content}
                             onChange={handleContentChange}
-                            placeholder="오늘은 어떤 하루였나요? (100자 이내)"
+                            placeholder="오늘은 어떤 하루였나요?"
                             rows={4}
                         />
                     </TextareaGroup>

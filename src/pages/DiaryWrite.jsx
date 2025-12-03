@@ -53,11 +53,8 @@ const DiaryWrite = () => {
     });
 
     const handleContentChange = (e) => {
-        const text = e.target.value;
-        if (text.length <= 100) {
-            setContent(text);
-            setError('');
-        }
+    setContent(e.target.value);
+    setError('');
     }
 
     const handleSubmit = (e) => {
@@ -78,14 +75,9 @@ const DiaryWrite = () => {
     }
 
     const handleCancel = () => {
-        if (content.trim().length > 0) {
-            if (window.confirm('작성 중인 내용이 있습니다. 정말 취소하시겠습니까?')) {
-                navigate(ROUTES.DIARY_LIST);
-            }
-        } else {
-            navigate(ROUTES.DIARY_LIST);
-        }
-    }
+        navigate(ROUTES.DIARY_LIST);
+    };
+
 
     return (
         <Container>
@@ -116,7 +108,7 @@ const DiaryWrite = () => {
                         <Textarea
                             value={content}
                             onChange={handleContentChange}
-                            placeholder="오늘은 어떤 하루였나요? (100자 이내)"
+                            placeholder="오늘은 어떤 하루였나요?"
                             rows={4}
                         />
                     </TextareaGroup>

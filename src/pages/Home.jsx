@@ -20,6 +20,7 @@ const Stats = styled.p`
     padding-bottom: 1px;
     padding-right: 450px;
     color: #6b6b6b;
+    font-weight: 800;
 `
 
 const StatsGrid = styled.div`

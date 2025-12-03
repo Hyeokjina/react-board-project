@@ -92,7 +92,7 @@ const DiaryList = () => {
     return (
         <Container>
             <Header>
-                <Title>내 일기장 📚</Title>
+                <Title>내 일기장</Title>
                 <Controls>
                     <SearchBar>
                         <SearchInput
@@ -102,65 +102,12 @@ const DiaryList = () => {
                             onChange={(e) => setSearchKeyword(e.target.value)}
                             onKeyDown={handleSearchKeyDown}
                         />
-                        <SearchButton onClick={handleSearch}>
-                            🔍
-                        </SearchButton>
                     </SearchBar>
                     <WriteButton onClick={() => navigate(ROUTES.DIARY_WRITE)}>
                         ✏️ 일기 쓰기
                     </WriteButton>
                 </Controls>
             </Header>
-
-            {isSearching && (
-                <div style={{ marginBottom: '20px', color: '#7F8C8D' }}>
-                    "{searchKeyword}" 검색 결과: {sortedDiaries.length}개
-                    <button
-                        onClick={() => {
-                            setSearchKeyword('');
-                            setIsSearching(false);
-                        }}
-                        style={{
-                            marginLeft: '10px',
-                            padding: '4px 12px',
-                            background: '#E0E0E0',
-                            border: 'none',
-                            borderRadius: '4px',
-                            cursor: 'pointer'
-                        }}
-                    >
-                        초기화
-                    </button>
-                </div>
-            )}
-
-            {sortedDiaries.length === 0 ? (
-                <EmptyState>
-                    <div>📝</div>
-                    <h3>{isSearching ? '검색 결과가 없습니다' : '아직 작성한 일기가 없습니다'}</h3>
-                    <p>{isSearching ? '다른 키워드로 검색해보세요' : '첫 일기를 작성해보세요!'}</p>
-                    {!isSearching && (
-                        <button onClick={() => navigate(ROUTES.DIARY_WRITE)}>
-                            일기 쓰러 가기
-                        </button>
-                    )}
-                </EmptyState>
-            ) : (
-                <DiaryGrid>
-                    {sortedDiaries.map(diary => (
-                        <DiaryCard
-                            key={diary.id}
-                            onClick={() => navigate(ROUTES.DIARY_DETAIL(diary.id))}
-                        >
-                            <DiaryDate>{formatDate(diary.date)}</DiaryDate>
-                            <DiaryEmotion>
-                                {EMOTIONS[diary.emotion] ? EMOTIONS[diary.emotion].emoji : '😊'}
-                            </DiaryEmotion>
-                            <DiaryContent>{diary.content}</DiaryContent>
-                        </DiaryCard>
-                    ))}
-                </DiaryGrid>
-            )}
         </Container>
     )
 }
