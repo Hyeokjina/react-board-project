@@ -52,7 +52,7 @@ const Header = () => {
         <HeaderContainer>
             <Nav>
                 <Logo onClick={() => navigate(ROUTES.HOME)}>
-                    📖 오늘 한 줄
+                    오늘 한 줄
                 </Logo>
 
                 <NavLinks>
