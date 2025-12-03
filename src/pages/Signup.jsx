@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { useAuth } from '../context/AuthContext'
+import useAuthStore from '../stores/useAuthStore'
 import { ROUTES } from '../routes/routePaths'
 import {
     Container,
@@ -18,7 +18,9 @@ import {
 
 const Signup = () => {
     const navigate = useNavigate();
-    const { signup } = useAuth();
+    
+    // Zustand store 사용
+    const signup = useAuthStore(state => state.signup);
 
     const [formData, setFormData] = useState({
         username: '',

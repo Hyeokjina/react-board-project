@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { useAuth } from '../context/AuthContext'
-import { useDiary } from '../context/DiaryContext'
+import useAuthStore from '../stores/useAuthStore'
+import useDiaryStore from '../stores/useDiaryStore'
 import { ROUTES } from '../routes/routePaths'
 import {
     Container,
@@ -31,15 +31,18 @@ const EMOTIONS = [
 
 const DiaryWrite = () => {
     const navigate = useNavigate();
-    const { currentUser, isLoggedIn } = useAuth();
-    const { addDiary } = useDiary();
+    
+    // Zustand stores 사용
+    const currentUser = useAuthStore(state => state.currentUser);
+    const isLoggedIn = useAuthStore(state => state.isLoggedIn);
+    const addDiary = useDiaryStore(state => state.addDiary);
 
     const [content, setContent] = useState('');
     const [emotion, setEmotion] = useState('happy');
     const [error, setError] = useState('');
 
     // 로그인 체크
-    if (!isLoggedIn) {
+    if (!isLoggedIn()) {
         navigate(ROUTES.LOGIN);
         return null;
     }

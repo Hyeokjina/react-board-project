@@ -1,6 +1,6 @@
 import React from 'react'
 import { useNavigate, useLocation } from 'react-router-dom'
-import { useAuth } from '../../context/AuthContext'
+import useAuthStore from '../../stores/useAuthStore'
 import { ROUTES } from '../../routes/routePaths'
 import {
     HeaderContainer,
@@ -16,7 +16,11 @@ import {
 const Header = () => {
     const navigate = useNavigate();
     const location = useLocation();
-    const { currentUser, logout, isLoggedIn } = useAuth();
+    
+    // Zustand store 사용
+    const currentUser = useAuthStore(state => state.currentUser);
+    const logout = useAuthStore(state => state.logout);
+    const isLoggedIn = useAuthStore(state => state.isLoggedIn);
 
     const handleLogout = () => {
         logout();
@@ -50,7 +54,7 @@ const Header = () => {
                 </NavLinks>
 
                 <AuthButtons>
-                    {isLoggedIn ? (
+                    {isLoggedIn() ? (
                         <>
                             <UserInfo>{currentUser.nickname}님</UserInfo>
                             <LogoutButton onClick={handleLogout}>

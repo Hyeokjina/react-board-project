@@ -1,6 +1,6 @@
 import React from 'react'
 import { useNavigate } from 'react-router-dom'
-import { useAuth } from '../context/AuthContext'
+import useAuthStore from '../stores/useAuthStore'
 import { ROUTES } from '../routes/routePaths'
 import styled from 'styled-components'
 
@@ -47,19 +47,22 @@ const Button = styled.button`
 
 const Home = () => {
     const navigate = useNavigate();
-    const { isLoggedIn, currentUser } = useAuth();
+    
+    // Zustand store 사용
+    const currentUser = useAuthStore(state => state.currentUser);
+    const isLoggedIn = useAuthStore(state => state.isLoggedIn);
 
     return (
         <HomeContainer>
             <Title>📖 오늘 한 줄</Title>
             <Subtitle>
-                {isLoggedIn
+                {isLoggedIn()
                     ? `환영합니다, ${currentUser.nickname}님! 오늘의 하루를 기록해보세요.`
                     : '하루를 100자로 기록하는 미니멀 일기장'}
             </Subtitle>
 
             <ButtonGroup>
-                {isLoggedIn ? (
+                {isLoggedIn() ? (
                     <>
                         <Button primary onClick={() => navigate(ROUTES.DIARY_WRITE)}>
                             일기 쓰기

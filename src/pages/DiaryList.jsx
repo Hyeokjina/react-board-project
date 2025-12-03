@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { useAuth } from '../context/AuthContext'
-import { useDiary } from '../context/DiaryContext'
+import useAuthStore from '../stores/useAuthStore'
+import useDiaryStore from '../stores/useDiaryStore'
 import { ROUTES } from '../routes/routePaths'
 import {
     Container,
@@ -31,14 +31,18 @@ const EMOTIONS = {
 
 const DiaryList = () => {
     const navigate = useNavigate();
-    const { currentUser, isLoggedIn } = useAuth();
-    const { getUserDiaries, searchDiaries } = useDiary();
+    
+    // Zustand stores 사용
+    const currentUser = useAuthStore(state => state.currentUser);
+    const isLoggedIn = useAuthStore(state => state.isLoggedIn);
+    const getUserDiaries = useDiaryStore(state => state.getUserDiaries);
+    const searchDiaries = useDiaryStore(state => state.searchDiaries);
 
     const [searchKeyword, setSearchKeyword] = useState('');
     const [isSearching, setIsSearching] = useState(false);
 
     // 로그인하지 않은 경우
-    if (!isLoggedIn) {
+    if (!isLoggedIn()) {
         return (
             <Container>
                 <LoginPrompt>
@@ -150,7 +154,7 @@ const DiaryList = () => {
                         >
                             <DiaryDate>{formatDate(diary.date)}</DiaryDate>
                             <DiaryEmotion>
-                                {EMOTIONS[diary.emotion]?.emoji || '😊'}
+                                {EMOTIONS[diary.emotion] ? EMOTIONS[diary.emotion].emoji : '😊'}
                             </DiaryEmotion>
                             <DiaryContent>{diary.content}</DiaryContent>
                         </DiaryCard>
