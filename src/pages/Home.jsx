@@ -92,6 +92,7 @@ const LoginPrompt = styled.div`
     }
 `
 
+
 // 감정 데이터
 const EMOTIONS = [
     { value: 'happy', emoji: '😊', label: '좋았어', color: '#4ECDC4' },

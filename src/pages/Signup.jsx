@@ -11,15 +11,12 @@ import {
     Label,
     Input,
     Button,
-    LinkText,
-    ErrorMessage,
-    SuccessMessage
+    LinkText
 } from './Auth.styled'
 
 const Signup = () => {
     const navigate = useNavigate();
     
-    // Zustand store 사용
     const signup = useAuthStore(state => state.signup);
 
     const [formData, setFormData] = useState({
@@ -29,60 +26,53 @@ const Signup = () => {
         nickname: ''
     });
 
-    const [message, setMessage] = useState({ type: '', text: '' });
-
     const handleChange = (e) => {
         setFormData({
             ...formData,
             [e.target.name]: e.target.value
         });
-        setMessage({ type: '', text: '' });
     }
 
     const handleSubmit = (e) => {
         e.preventDefault();
 
-        // 유효성 검사
         if (!formData.username.trim()) {
-            setMessage({ type: 'error', text: '아이디를 입력해주세요.' });
+            alert('아이디를 입력해주세요.');
             return;
         }
 
         if (formData.username.length < 4) {
-            setMessage({ type: 'error', text: '아이디는 4자 이상이어야 합니다.' });
+            alert('아이디는 4자 이상이어야 합니다.');
             return;
         }
 
         if (!formData.password) {
-            setMessage({ type: 'error', text: '비밀번호를 입력해주세요.' });
+            alert('비밀번호를 입력해주세요.');
             return;
         }
 
         if (formData.password.length < 6) {
-            setMessage({ type: 'error', text: '비밀번호는 6자 이상이어야 합니다.' });
+            alert('비밀번호는 6자 이상이어야 합니다.');
             return;
         }
 
         if (formData.password !== formData.passwordConfirm) {
-            setMessage({ type: 'error', text: '비밀번호가 일치하지 않습니다.' });
+            alert('비밀번호가 일치하지 않습니다.');
             return;
         }
 
         if (!formData.nickname.trim()) {
-            setMessage({ type: 'error', text: '닉네임을 입력해주세요.' });
+            alert('닉네임을 입력해주세요.');
             return;
         }
 
-        // 회원가입 시도
         const result = signup(formData.username, formData.password, formData.nickname);
 
         if (result.success) {
-            setMessage({ type: 'success', text: result.message });
-            setTimeout(() => {
-                navigate(ROUTES.LOGIN);
-            }, 1500);
+            alert(result.message);
+            navigate(ROUTES.LOGIN);
         } else {
-            setMessage({ type: 'error', text: result.message });
+            alert(result.message);
         }
     }
 
@@ -134,14 +124,6 @@ const Signup = () => {
                             placeholder="닉네임"
                         />
                     </InputGroup>
-
-                    {message.text && (
-                        message.type === 'error' ? (
-                            <ErrorMessage>{message.text}</ErrorMessage>
-                        ) : (
-                            <SuccessMessage>{message.text}</SuccessMessage>
-                        )
-                    )}
 
                     <Button type="submit">회원가입</Button>
                 </Form>

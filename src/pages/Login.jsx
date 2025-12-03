@@ -11,15 +11,12 @@ import {
     Label,
     Input,
     Button,
-    LinkText,
-    ErrorMessage,
-    SuccessMessage
+    LinkText
 } from './Auth.styled'
 
 const Login = () => {
     const navigate = useNavigate();
     
-    // Zustand store 사용
     const login = useAuthStore(state => state.login);
 
     const [formData, setFormData] = useState({
@@ -27,38 +24,33 @@ const Login = () => {
         password: ''
     });
 
-    const [message, setMessage] = useState({ type: '', text: '' });
-
     const handleChange = (e) => {
         setFormData({
             ...formData,
             [e.target.name]: e.target.value
         });
-        setMessage({ type: '', text: '' });
     }
 
     const handleSubmit = (e) => {
         e.preventDefault();
 
         if (!formData.username.trim()) {
-            setMessage({ type: 'error', text: '아이디를 입력해주세요.' });
+            alert('아이디를 입력해주세요.');
             return;
         }
 
         if (!formData.password) {
-            setMessage({ type: 'error', text: '비밀번호를 입력해주세요.' });
+            alert('비밀번호를 입력해주세요.');
             return;
         }
 
         const result = login(formData.username, formData.password);
 
         if (result.success) {
-            setMessage({ type: 'success', text: result.message });
-            setTimeout(() => {
-                navigate(ROUTES.HOME);
-            }, 1000);
+            alert(result.message);
+            navigate(ROUTES.HOME);
         } else {
-            setMessage({ type: 'error', text: result.message });
+            alert(result.message);
         }
     }
 
@@ -88,14 +80,6 @@ const Login = () => {
                             placeholder="비밀번호"
                         />
                     </InputGroup>
-
-                    {message.text && (
-                        message.type === 'error' ? (
-                            <ErrorMessage>{message.text}</ErrorMessage>
-                        ) : (
-                            <SuccessMessage>{message.text}</SuccessMessage>
-                        )
-                    )}
 
                     <Button type="submit">로그인</Button>
                 </Form>
