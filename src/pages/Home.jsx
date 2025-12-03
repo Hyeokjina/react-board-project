@@ -16,7 +16,7 @@ const Title = styled.h1`
     text-align: center;
 `
 const Stats = styled.p`
-    font-size: 15x;
+    font-size: 15px;
     padding-bottom: 1px;
     padding-right: 450px;
     color: #6b6b6b;
