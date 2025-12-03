@@ -211,7 +211,7 @@ const MyPage = () => {
     }
 
     const handleDelete = () => {
-        if (window.confirm('정말 탈퇴하시겠습니까?\n작성한 모든 일기가 삭제됩니다.')) {
+        if (window.confirm('정말 탈퇴하시겠습니까?')) {
              {
                 const result = deleteUser();
                 alert(result.message);
