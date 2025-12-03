@@ -1,129 +1,23 @@
-import React, { useState, useEffect } from 'react'
-import { useNavigate } from 'react-router-dom'
-import useAuthStore from '../stores/useAuthStore'
-import useDiaryStore from '../stores/useDiaryStore'
-import { ROUTES } from '../routes/routePaths'
-import styled from 'styled-components'
-
-const Container = styled.div`
-    display: flex;
-    justify-content: center;
-    padding: 20px;
-`
-
-const Card = styled.div`
-    background: white;
-    padding: 48px;
-    border-radius: 16px;
-    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
-    width: 100%;
-    max-width: 500px;
-`
-
-const Title = styled.h1`
-    font-size: 32px;
-    font-weight: 700;
-    color: #2C3E50;
-    margin-bottom: 32px;
-    text-align: center;
-`
-
-const Form = styled.form`
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-`
-
-const InputGroup = styled.div`
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-`
-
-const Label = styled.label`
-    font-size: 14px;
-    font-weight: 600;
-    color: #2C3E50;
-`
-
-const Input = styled.input`
-    padding: 12px 16px;
-    border: 2px solid #E0E0E0;
-    border-radius: 8px;
-    font-size: 16px;
-    transition: all 0.2s;
-
-    &:focus {
-        outline: none;
-        border-color: #6C63FF;
-    }
-`
-
-const ButtonGroup = styled.div`
-    display: flex;
-    gap: 12px;
-    margin-top: 16px;
-`
-
-const SaveButton = styled.button`
-    flex: 2;
-    padding: 14px;
-    background: #6C63FF;
-    color: white;
-    border: none;
-    border-radius: 8px;
-    font-size: 16px;
-    font-weight: 600;
-    cursor: pointer;
-    transition: all 0.2s;
-
-    &:hover {
-        background: #5a52d5;
-    }
-`
-
-const CancelButton = styled.button`
-    flex: 1;
-    padding: 14px;
-    background: #E0E0E0;
-    color: #2C3E50;
-    border: none;
-    border-radius: 8px;
-    font-size: 16px;
-    font-weight: 600;
-    cursor: pointer;
-    transition: all 0.2s;
-
-    &:hover {
-        background: #D0D0D0;
-    }
-`
-
-const Divider = styled.hr`
-    border: none;
-    border-top: 1px solid #E0E0E0;
-    margin: 32px 0;
-`
-
-const DangerZone = styled.div`
-    text-align: center;
-`
-
-const DeleteButton = styled.button`
-    padding: 14px 32px;
-    background: #E74C3C;
-    color: white;
-    border: none;
-    border-radius: 8px;
-    font-size: 16px;
-    font-weight: 600;
-    cursor: pointer;
-    transition: all 0.2s;
-
-    &:hover {
-        background: #c0392b;
-    }
-`
+import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import useAuthStore from '../stores/useAuthStore';
+import useDiaryStore from '../stores/useDiaryStore';
+import { ROUTES } from '../routes/routePaths';
+import {
+    Container,
+    Card,
+    Title,
+    Form,
+    InputGroup,
+    Label,
+    Input,
+    ButtonGroup,
+    SaveButton,
+    CancelButton,
+    Divider,
+    DangerZone,
+    DeleteButton
+} from './Mypage.styled';
 
 const MyPage = () => {
     const navigate = useNavigate();
@@ -134,7 +28,6 @@ const MyPage = () => {
     const deleteUser = useAuthStore(state => state.deleteUser);
     const getCurrentUserPassword = useAuthStore(state => state.getCurrentUserPassword);
     
-    // 유저의 일기도 삭제하기 위해
     const diaries = useDiaryStore(state => state.diaries);
 
     const [formData, setFormData] = useState({
@@ -156,7 +49,6 @@ const MyPage = () => {
         }
     }, [currentUser, isLoggedIn, getCurrentUserPassword]);
 
-    // 로그인 체크
     if (!isLoggedIn()) {
         navigate(ROUTES.LOGIN);
         return null;
@@ -212,11 +104,9 @@ const MyPage = () => {
 
     const handleDelete = () => {
         if (window.confirm('정말 탈퇴하시겠습니까?')) {
-             {
-                const result = deleteUser();
-                alert(result.message);
-                navigate(ROUTES.HOME);
-            }
+            const result = deleteUser();
+            alert(result.message);
+            navigate(ROUTES.HOME);
         }
     }
 
@@ -289,7 +179,7 @@ const MyPage = () => {
                 </DangerZone>
             </Card>
         </Container>
-    )
+    );
 }
 
-export default MyPage
+export default MyPage;
