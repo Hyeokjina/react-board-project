@@ -10,7 +10,6 @@ import {
     Controls,
     SearchBar,
     SearchInput,
-    SearchButton,
     WriteButton,
     DiaryGrid,
     DiaryCard,
@@ -104,10 +103,35 @@ const DiaryList = () => {
                         />
                     </SearchBar>
                     <WriteButton onClick={() => navigate(ROUTES.DIARY_WRITE)}>
-                        ✏️ 일기 쓰기
+                        일기 쓰기
                     </WriteButton>
                 </Controls>
             </Header>
+
+            {sortedDiaries.length === 0 ? (
+                !isSearching && (
+                    <EmptyState>
+                        <h3>아직 작성한 일기가 없습니다</h3>
+                        <p>첫 일기를 작성해보세요!</p>
+                        
+                    </EmptyState>
+                )
+            ) : (
+                <DiaryGrid>
+                    {sortedDiaries.map(diary => (
+                        <DiaryCard
+                            key={diary.id}
+                            onClick={() => navigate(ROUTES.DIARY_DETAIL(diary.id))}
+                        >
+                            <DiaryDate>{formatDate(diary.date)}</DiaryDate>
+                            <DiaryEmotion>
+                                {EMOTIONS[diary.emotion] ? EMOTIONS[diary.emotion].emoji : '😊'}
+                            </DiaryEmotion>
+                            <DiaryContent>{diary.content}</DiaryContent>
+                        </DiaryCard>
+                    ))}
+                </DiaryGrid>
+            )}
         </Container>
     )
 }
