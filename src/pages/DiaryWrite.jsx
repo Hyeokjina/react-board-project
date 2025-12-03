@@ -82,7 +82,7 @@ const DiaryWrite = () => {
     return (
         <Container>
             <FormCard>
-                <Title>오늘 한 줄 📝</Title>
+                <Title>오늘 한 줄 일기</Title>
                 <DateDisplay>{today}</DateDisplay>
 
                 <Form onSubmit={handleSubmit}>

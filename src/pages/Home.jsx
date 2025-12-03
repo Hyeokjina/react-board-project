@@ -97,7 +97,7 @@ const LoginPrompt = styled.div`
 // 감정 데이터
 const EMOTIONS = [
     { value: 'happy', emoji: '😊', label: '좋았어', color: '#4ECDC4' },
-    { value: 'sad', emoji: '😢', label: '힘들었어', color: '#5C7AEA' },
+    { value: 'sad', emoji: '😢', label: '힘들다..', color: '#5C7AEA' },
     { value: 'normal', emoji: '😐', label: '그냥 그래', color: '#45B649' },
     { value: 'fire', emoji: '🔥', label: '최고!', color: '#FF6B6B' }
 ]

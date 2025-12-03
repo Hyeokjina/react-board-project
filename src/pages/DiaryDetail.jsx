@@ -61,7 +61,7 @@ const NotFoundCard = styled.div`
 // 감정 옵션
 const EMOTIONS = [
     { value: 'happy', emoji: '😊', label: '좋았어' },
-    { value: 'sad', emoji: '😢', label: '힘들었어' },
+    { value: 'sad', emoji: '😢', label: '힘들어..' },
     { value: 'normal', emoji: '😐', label: '그냥 그래' },
     { value: 'fire', emoji: '🔥', label: '최고!' }
 ]
@@ -151,7 +151,7 @@ const DiaryDetail = () => {
     return (
         <Container>
             <FormCard>
-                <Title>일기 수정 ✏️</Title>
+                <Title>일기 수정</Title>
                 <DateDisplay>{formatDate(diary.date)}</DateDisplay>
 
                 <Form onSubmit={handleSubmit}>
