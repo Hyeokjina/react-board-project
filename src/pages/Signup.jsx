@@ -79,7 +79,7 @@ const Signup = () => {
     return (
         <Container>
             <FormCard>
-                <Title>회원가입 📝</Title>
+                <Title>회원가입</Title>
                 <Form onSubmit={handleSubmit}>
                     <InputGroup>
                         <Label>아이디</Label>
