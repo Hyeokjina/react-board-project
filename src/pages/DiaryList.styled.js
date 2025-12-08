@@ -115,18 +115,17 @@ export const DiaryGrid = styled.div`
 export const DiaryCard = styled.div`
     background: #ffffff;
     padding: 24px;
-    border-radius: 16px; /* 둥글기 강화 */
+    border-radius: 16px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08), 0 8px 24px rgba(0, 0, 0, 0.06);
-    border: 1px solid #f0f0f0; /* subtle border로 깊이감 추가 */
+    border: 1px solid #f0f0f0; 
     cursor: pointer;
     transition: all 0.3s ease;
 
     &:hover {
-        transform: translateY(-6px) scale(1.02); /* 살짝 확대 + 떠오르는 효과 */
+        transform: translateY(-6px) scale(1.02);
         box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12), 0 12px 36px rgba(0, 0, 0, 0.08);
-        background: #f9f9ff; /* subtle 배경 색 변화 */
+        background: #f9f9ff; 
     }
-
     @media (max-width: 768px) {
         padding: 20px;
     }

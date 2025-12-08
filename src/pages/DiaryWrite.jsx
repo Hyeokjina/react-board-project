@@ -23,7 +23,7 @@ import {
 // 감정 옵션
 const EMOTIONS = [
     { value: 'happy', emoji: '😊', label: '좋았어' },
-    { value: 'sad', emoji: '😢', label: '힘들었어' },
+    { value: 'sad', emoji: '😢', label: '힘들어..' },
     { value: 'normal', emoji: '😐', label: '그냥 그래' },
     { value: 'fire', emoji: '🔥', label: '최고!' }
 ]

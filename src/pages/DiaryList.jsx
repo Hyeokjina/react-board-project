@@ -113,7 +113,6 @@ const DiaryList = () => {
                     <EmptyState>
                         <h3>아직 작성한 일기가 없습니다</h3>
                         <p>첫 일기를 작성해보세요!</p>
-                        
                     </EmptyState>
                 )
             ) : (

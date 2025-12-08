@@ -6,4 +6,5 @@ export const ROUTES = {
     DIARY_WRITE: "/diaries/write",
     DIARY_DETAIL: (id) => `/diaries/${id}`,
     MYPAGE: "/mypage",
+    
 }
