@@ -47,7 +47,7 @@ board-project/
 └── eslint.config.js
 ```
 
-## 🗂️ 디렉토리 상세 설명
+## 🗂️ 디렉토리 상세설명
 
 ### `/src/components/`
 재사용 가능한 컴포넌트들을 관리합니다.
